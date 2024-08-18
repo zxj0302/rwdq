@@ -57,7 +57,7 @@ def binary_to_data(binary):
     buffer = io.BytesIO(binary)
     return torch.load(buffer)
 
-def run_query(config_file, db_file):
+def run_query(config_file, db_file, output_file):
     config = load_config_from_json(config_file)
     results, total_count = query_database(db_file, config)
 
@@ -67,7 +67,11 @@ def run_query(config_file, db_file):
 
     print("Example Data Object:\n")
     if data_objects:
-        print(data_objects[0])
+        print(data_objects[0], "\n")
+
+    # Save the data objects to a file
+    torch.save(data_objects, output_file)
+    print(f"Data objects saved to {output_file}")
 
     return data_objects
 
@@ -75,6 +79,7 @@ def main():
     parser = argparse.ArgumentParser(description="Query a database based on configuration.")
     parser.add_argument('--config', default='config.json', help='Path to the configuration JSON file (default: config.json)')
     parser.add_argument('--database', default='rwd.db', help='Path to the SQLite database file (default: rwd.db)')
+    parser.add_argument('--output', default='output.pt', help='Path to the output file (default: output.pt)')
     args = parser.parse_args()
 
     run_query(args.config, args.database)
