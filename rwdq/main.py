@@ -70,8 +70,9 @@ def run_query(config_file, db_file, output_file):
         print(data_objects[0], "\n")
 
     # Save the data objects to a file
-    torch.save(data_objects, output_file)
-    print(f"Data objects saved to {output_file}")
+    if output_file is not None:
+        torch.save(data_objects, output_file)
+        print(f"Data objects saved to {output_file}")
 
     return data_objects
 
@@ -79,7 +80,7 @@ def main():
     parser = argparse.ArgumentParser(description="Query a database based on configuration.")
     parser.add_argument('--config', default='config.json', help='Path to the configuration JSON file (default: config.json)')
     parser.add_argument('--database', default='rwd.db', help='Path to the SQLite database file (default: rwd.db)')
-    parser.add_argument('--output', default='output.pt', help='Path to the output file (default: output.pt)')
+    parser.add_argument('--output', default=None, help='Path to the output file (default: None)')
     args = parser.parse_args()
 
     run_query(args.config, args.database, args.output)
