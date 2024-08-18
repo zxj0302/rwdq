@@ -82,7 +82,7 @@ def main():
     parser.add_argument('--output', default='output.pt', help='Path to the output file (default: output.pt)')
     args = parser.parse_args()
 
-    run_query(args.config, args.database)
+    run_query(args.config, args.database, args.output)
 
 if __name__ == "__main__":
     main()
