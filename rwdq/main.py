@@ -1,3 +1,4 @@
+import random
 import sqlite3
 import json
 import torch
@@ -15,7 +16,7 @@ def query_database(db_file, config):
 
     where_clauses = []
     for attr, bounds in config.items():
-        if attr in ['domain', 'limit']:
+        if attr in ['domain', 'limit', 'random_seed']:
             continue
         lower = bounds.get('min', 0)
         upper = bounds.get('max', math.inf)
@@ -35,7 +36,11 @@ def query_database(db_file, config):
 
     where_statement = " AND ".join(where_clauses)
 
-    query = f"SELECT data FROM rwd WHERE {where_statement} ORDER BY RANDOM()"
+    seed = config.get('random_seed', 0)
+    conn.create_function("SEEDED_RAND", 0, lambda: random.random())
+    random.seed(seed)
+
+    query = f"SELECT data FROM rwd WHERE {where_statement} ORDER BY SEEDED_RAND()"
 
     if 'limit' in config:
         query += f" LIMIT {config['limit']}"
