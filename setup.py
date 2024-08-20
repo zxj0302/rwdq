@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="rwdq",
-    version="0.1.2",
+    version="0.1.3",
     author="Zhu Xiangju",
     author_email="zhuxiangjv@gmail.com",
     description="A tool for querying real-world graph database",
